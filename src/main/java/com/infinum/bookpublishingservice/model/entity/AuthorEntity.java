@@ -1,6 +1,7 @@
 package com.infinum.bookpublishingservice.model.entity;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -11,13 +12,14 @@ import java.util.Objects;
 import java.util.Set;
 
 @Data
+@NoArgsConstructor
 @Entity
 @Table(name = "author")
 public class AuthorEntity {
 
     @Id
-    @GeneratedValue(generator="system-uuid")
-    @GenericGenerator(name="system-uuid", strategy = "uuid")
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
     private String id;
 
     @Column(nullable = false, unique = true)
@@ -42,6 +44,10 @@ public class AuthorEntity {
     @PreUpdate
     protected void onUpdate() {
         setUpdatedAt(Instant.now());
+    }
+
+    public AuthorEntity(String name) {
+        this.name = name;
     }
 
 }

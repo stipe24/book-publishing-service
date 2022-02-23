@@ -1,6 +1,7 @@
 package com.infinum.bookpublishingservice.model.entity;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -9,6 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Data
+@NoArgsConstructor
 @Entity
 @Table(name = "genre")
 public class GenreEntity {
@@ -24,5 +26,9 @@ public class GenreEntity {
     @ToString.Exclude
     @ManyToMany(mappedBy = "genres")
     private Set<BookEntity> books = new HashSet<>();
+
+    public GenreEntity(String name) {
+        this.name = name;
+    }
 
 }

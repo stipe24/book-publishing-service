@@ -1,9 +1,15 @@
 package com.infinum.bookpublishingservice.controller;
 
+import com.infinum.bookpublishingservice.model.book.BookFilter;
+import com.infinum.bookpublishingservice.model.book.BookPage;
+import com.infinum.bookpublishingservice.model.book.BookRequest;
+import com.infinum.bookpublishingservice.model.entity.BookEntity;
 import com.infinum.bookpublishingservice.service.BookService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
@@ -11,4 +17,18 @@ import org.springframework.web.bind.annotation.RestController;
 public class BookController {
 
     private final BookService bookService;
+
+    //TODO: Create book - ADMIN ONLY!
+    @PostMapping
+    public ResponseEntity<BookEntity> create(@RequestBody BookRequest request) {
+        return new ResponseEntity<>(bookService.create(request), HttpStatus.CREATED);
+    }
+
+    //TODO: PUBLIC!
+    @GetMapping
+    public ResponseEntity<Page<BookEntity>> get(BookFilter filter, BookPage page) {
+        var bookFilter = filter != null ? filter : new BookFilter();
+        return new ResponseEntity<>(bookService.findByFilter(bookFilter, page), HttpStatus.OK);
+    }
+
 }
