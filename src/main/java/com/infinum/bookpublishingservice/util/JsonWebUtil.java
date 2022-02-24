@@ -46,7 +46,8 @@ public class JsonWebUtil {
 
     public String getSpecificClaimValueFromToken(String accessToken, String claimName) {
         var decodedJwt = decodeAccessToken(accessToken);
-        return String.valueOf(decodedJwt.getClaims().get(claimName));
+        var role = String.valueOf(decodedJwt.getClaims().get(claimName));
+        return role.replaceAll("\"", "");
     }
 
     public boolean isTokenExpired(String accessToken) {
