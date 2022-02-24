@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/book")
@@ -19,7 +21,7 @@ public class BookController {
     private final BookService bookService;
 
     @PostMapping
-    public ResponseEntity<BookEntity> create(@RequestBody BookRequest request) {
+    public ResponseEntity<BookEntity> create(@RequestBody @Valid BookRequest request) {
         return new ResponseEntity<>(bookService.create(request), HttpStatus.CREATED);
     }
 

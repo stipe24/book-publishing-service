@@ -15,5 +15,6 @@ public class BookFilter {
     private String title;
     private String isbn;
     private Set<String> genreIds;
+    private Set<String> authorIds;
     private Date addedAt;
 }

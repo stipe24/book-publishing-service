@@ -17,10 +17,12 @@ public class ReportScheduler {
 
     @Scheduled(cron = "0 0 * * * *")
     public void generateIsbnReport() {
+
+        log.info("Report scheduler started...");
         var now = Instant.now();
         var reportContent = reportService.generateIsbnReport();
-        reportService.saveReport(now);
-        //log.info(reportContent);
+        var report = reportService.saveReport(now);
+        log.info("Report " + report.getId() + " generated!");
     }
 
 }

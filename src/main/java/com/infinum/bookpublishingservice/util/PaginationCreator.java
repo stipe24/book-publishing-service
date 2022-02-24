@@ -1,4 +1,4 @@
-package com.infinum.bookpublishingservice.model.creator;
+package com.infinum.bookpublishingservice.util;
 
 import com.infinum.bookpublishingservice.model.author.AuthorPage;
 import com.infinum.bookpublishingservice.model.book.BookPage;

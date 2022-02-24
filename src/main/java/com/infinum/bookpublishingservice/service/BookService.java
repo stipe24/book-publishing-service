@@ -1,10 +1,10 @@
 package com.infinum.bookpublishingservice.service;
 
 import com.infinum.bookpublishingservice.model.book.BookFilter;
-import com.infinum.bookpublishingservice.model.creator.BookMatcher;
 import com.infinum.bookpublishingservice.model.book.BookPage;
-import com.infinum.bookpublishingservice.model.creator.PaginationCreator;
 import com.infinum.bookpublishingservice.model.book.BookRequest;
+import com.infinum.bookpublishingservice.model.book.BookMatcher;
+import com.infinum.bookpublishingservice.util.PaginationCreator;
 import com.infinum.bookpublishingservice.model.entity.AuthorEntity;
 import com.infinum.bookpublishingservice.model.entity.BookEntity;
 import com.infinum.bookpublishingservice.model.entity.GenreEntity;
@@ -43,6 +43,10 @@ public class BookService {
         BookEntity book = new BookEntity();
         book.setTitle(request.getTitle());
         book.setPublishedAt(request.getPublishedAt());
+
+        if (bookRepository.findByIsbn(request.getIsbn()).isPresent()) {
+            throw new RuntimeException("Book with isbn: " + request.getIsbn() + " already exists. ");
+        }
         book.setIsbn(request.getIsbn());
 
         request.getAuthorIds().forEach(authorId -> {
@@ -54,8 +58,7 @@ public class BookService {
                 author.setCreatedAt(oldAuthor.get().getCreatedAt());
                 author.setUpdatedAt(oldAuthor.get().getUpdatedAt());
                 book.addAuthor(author);
-            }
-            else {
+            } else {
                 throw new RuntimeException("Invalid request. Author id: " + authorId + " not valid.");
             }
         });
@@ -67,8 +70,7 @@ public class BookService {
                 genre.setId(oldGenre.get().getId());
                 genre.setName(oldGenre.get().getName());
                 book.addGenre(genre);
-            }
-            else {
+            } else {
                 throw new RuntimeException("Invalid request. Genre id: " + genreId + " not valid.");
             }
         });

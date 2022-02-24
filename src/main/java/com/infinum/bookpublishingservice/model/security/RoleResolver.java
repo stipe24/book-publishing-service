@@ -1,4 +1,4 @@
-package com.infinum.bookpublishingservice.model.creator;
+package com.infinum.bookpublishingservice.model.security;
 
 import com.infinum.bookpublishingservice.model.security.Role;
 import lombok.AccessLevel;

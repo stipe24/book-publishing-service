@@ -20,12 +20,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @AllArgsConstructor
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private final CustomUserDetailsService myUserDetailsService;
+    private final CustomUserDetailsService customUserDetailsService;
     private final JwtRequestFilter jwtRequestFilter;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(myUserDetailsService);
+        auth.userDetailsService(customUserDetailsService);
     }
 
     @Override
@@ -37,7 +37,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/author").hasAnyAuthority(Role.ADMIN.name(), Role.AUTHOR.name(), Role.PUBLIC.name())
                 .antMatchers(HttpMethod.GET, "/book").hasAnyAuthority(Role.ADMIN.name(), Role.AUTHOR.name(), Role.PUBLIC.name())
                 .antMatchers(HttpMethod.POST, "/book").hasAuthority(Role.AUTHOR.name())
-                .antMatchers( "/test").permitAll()
                 .anyRequest().authenticated()
                 .and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);

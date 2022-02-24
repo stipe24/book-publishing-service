@@ -3,8 +3,8 @@ package com.infinum.bookpublishingservice.service;
 import com.infinum.bookpublishingservice.model.author.Author;
 import com.infinum.bookpublishingservice.model.author.AuthorCount;
 import com.infinum.bookpublishingservice.model.author.AuthorPage;
-import com.infinum.bookpublishingservice.model.creator.PaginationCreator;
 import com.infinum.bookpublishingservice.model.author.AuthorRequest;
+import com.infinum.bookpublishingservice.util.PaginationCreator;
 import com.infinum.bookpublishingservice.model.entity.AuthorEntity;
 import com.infinum.bookpublishingservice.repository.AuthorRepository;
 import lombok.AllArgsConstructor;
@@ -17,11 +17,13 @@ public class AuthorService {
 
     private final AuthorRepository authorRepository;
 
-    public Page<AuthorCount> count(AuthorPage page){
+    public Page<AuthorCount> get(AuthorPage page) {
+
         return authorRepository.countByAuthor(PaginationCreator.createPaginationForAuthor(page));
     }
 
     public Author create(AuthorRequest request) {
+
         if (authorExists(request.getName())) {
             throw new RuntimeException("Author with this name already exists. ");
         }
@@ -33,12 +35,14 @@ public class AuthorService {
         var oldAuthor = authorRepository.findById(authorId);
 
         if (oldAuthor.isPresent()) {
-                if (!oldAuthor.get().getName().equals(name) && !authorExists(name)) {
-                    oldAuthor.get().setName(name);
-                    return Author.from(authorRepository.save(oldAuthor.get()));
-                }
+            if (oldAuthor.get().getName().equals(name) && authorExists(name)) {
+                throw new RuntimeException("Author with this name already exists or the name is the same. ");
+            }
+            oldAuthor.get().setName(name);
+            return Author.from(authorRepository.save(oldAuthor.get()));
         }
-        throw new RuntimeException("Author with this name already exists or the name is the same.");
+        throw new RuntimeException("Invalid author ID. ");
+
     }
 
     private boolean authorExists(String name) {

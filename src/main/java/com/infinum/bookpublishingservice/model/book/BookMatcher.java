@@ -1,6 +1,6 @@
-package com.infinum.bookpublishingservice.model.creator;
+package com.infinum.bookpublishingservice.model.book;
 
-import com.infinum.bookpublishingservice.model.book.BookFilter;
+import com.infinum.bookpublishingservice.model.entity.AuthorEntity;
 import com.infinum.bookpublishingservice.model.entity.BookEntity;
 import com.infinum.bookpublishingservice.model.entity.GenreEntity;
 import org.springframework.data.jpa.domain.Specification;
@@ -33,6 +33,7 @@ public final class BookMatcher {
             matcher.matchTitle();
             matcher.matchIsbn();
             matcher.matchGenre();
+            matcher.matchAuthor();
             matcher.matchAdded();
 
             return builder.and(matcher.getPredicates());
@@ -58,6 +59,14 @@ public final class BookMatcher {
             Join<BookEntity, GenreEntity> join = root.join("genres", JoinType.LEFT);
             Predicate genreId = join.get("id").in(filter.getGenreIds().stream().map(String::valueOf).collect(Collectors.toList()));
             predicates.add(genreId);
+        }
+    }
+
+    private void matchAuthor() {
+        if (filter.getAuthorIds() != null) {
+            Join<BookEntity, AuthorEntity> join = root.join("authors", JoinType.LEFT);
+            Predicate authorId = join.get("id").in(filter.getAuthorIds().stream().map(String::valueOf).collect(Collectors.toList()));
+            predicates.add(authorId);
         }
     }
 

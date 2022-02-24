@@ -21,6 +21,7 @@ public class BookEntity {
     @Id
     @GeneratedValue(generator="system-uuid")
     @GenericGenerator(name="system-uuid", strategy = "uuid")
+    @JsonIgnore
     private String id;
 
     @Column(nullable = false)

@@ -1,7 +1,7 @@
 package com.infinum.bookpublishingservice.service;
 
 import com.infinum.bookpublishingservice.model.book.BookFilter;
-import com.infinum.bookpublishingservice.model.creator.PaginationCreator;
+import com.infinum.bookpublishingservice.util.PaginationCreator;
 import com.infinum.bookpublishingservice.model.entity.BookEntity;
 import com.infinum.bookpublishingservice.model.entity.ReportEntity;
 import com.infinum.bookpublishingservice.repository.BookRepository;
@@ -25,20 +25,19 @@ public class ReportService {
 
         var lastReportTime = reportRepository.getLastReportTime(PaginationCreator.createPaginationForReport());
         if (lastReportTime.getContent().isEmpty()) {
-            var isbn = bookRepository.findAll().stream().map(BookEntity::getIsbn).collect(Collectors.toList());
-            return String.join(",", isbn);
-        }
-        else {
+            var isbns = bookRepository.findAll().stream().map(BookEntity::getIsbn).collect(Collectors.toList());
+            return String.join(",", isbns);
+        } else {
             BookFilter filter = new BookFilter();
             filter.setAddedAt(Date.from(lastReportTime.getContent().get(0)));
-            var isbn = bookService.findByFilter(filter).stream().map(BookEntity::getIsbn).collect(Collectors.toList());
-            return String.join(",", isbn);
+            var isbns = bookService.findByFilter(filter).stream().map(BookEntity::getIsbn).collect(Collectors.toList());
+            return String.join(",", isbns);
         }
     }
 
-    public void saveReport(Instant time) {
+    public ReportEntity saveReport(Instant time) {
         ReportEntity report = new ReportEntity(time);
-        reportRepository.save(report);
+        return reportRepository.save(report);
     }
 
 }
