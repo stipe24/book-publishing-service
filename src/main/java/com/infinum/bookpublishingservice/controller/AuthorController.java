@@ -18,19 +18,16 @@ public class AuthorController {
 
     private final AuthorService authorService;
 
-    //TODO: Create author - ADMIN ONLY!
     @PostMapping
     public ResponseEntity<Author> create(@RequestBody AuthorRequest request) {
         return new ResponseEntity<>(authorService.create(request), HttpStatus.CREATED);
     }
 
-    //TODO: Update author - ADMIN ONLY!
     @PatchMapping("/{authorId}")
     public ResponseEntity<Author> update(@PathVariable String authorId, @RequestBody AuthorRequest request) {
         return new ResponseEntity<>(authorService.update(authorId, request.getName()), HttpStatus.OK);
     }
 
-    //TODO: PUBLIC!
     @GetMapping
     public ResponseEntity<Page<AuthorCount>> get(AuthorPage page) {
         return new ResponseEntity<>(authorService.count(page), HttpStatus.OK);

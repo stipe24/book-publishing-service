@@ -18,13 +18,11 @@ public class BookController {
 
     private final BookService bookService;
 
-    //TODO: Create book - ADMIN ONLY!
     @PostMapping
     public ResponseEntity<BookEntity> create(@RequestBody BookRequest request) {
         return new ResponseEntity<>(bookService.create(request), HttpStatus.CREATED);
     }
 
-    //TODO: PUBLIC!
     @GetMapping
     public ResponseEntity<Page<BookEntity>> get(BookFilter filter, BookPage page) {
         var bookFilter = filter != null ? filter : new BookFilter();

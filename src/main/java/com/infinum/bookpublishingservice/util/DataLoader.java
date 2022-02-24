@@ -1,4 +1,4 @@
-package com.infinum.bookpublishingservice;
+package com.infinum.bookpublishingservice.util;
 
 import com.infinum.bookpublishingservice.model.entity.AuthorEntity;
 import com.infinum.bookpublishingservice.model.entity.BookEntity;
@@ -24,6 +24,7 @@ public class DataLoader implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
+
         populateData();
     }
 
